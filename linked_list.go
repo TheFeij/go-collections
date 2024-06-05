@@ -5,13 +5,15 @@ type LinkedList[T any] interface {
 	Add(T)
 	AddFirst(T)
 	AddLast(T)
-	GetFirst() (T, bool)
-	GetLast() (T, bool)
+	GetFirst() (t T, ok bool)
+	GetLast() (t T, ok bool)
 	Clear()
-	DeleteFirst()
-	DeleteLast()
+	DeleteFirst() (ok bool)
+	DeleteLast() (ok bool)
 	Size() int
-	Get(index int) (T, bool)
+	Get(index int) (t T, ok bool)
+	InsertToIndex(t T, index int) (ok bool)
+	DeleteIndex(index int) (ok bool)
 }
 
 // node represents a node in linked list
@@ -28,6 +30,78 @@ type linkedList[T any] struct {
 	size  int
 }
 
+// InsertToIndex inserts input value to the given index
+func (l *linkedList[T]) InsertToIndex(t T, index int) (ok bool) {
+	// check if the index is valid
+	if index < 0 || index >= l.size {
+		return
+	}
+
+	// if index is 0, then call AddFirst
+	if index == 0 {
+		l.AddFirst(t)
+		return true
+	}
+
+	// after the above conditions are passed, we are sure that the index we are
+	// about to add has both next and previous elements
+
+	// get the element at the input index
+	currNodeAtIndex := l.get(index)
+
+	newNodeAtIndex := &node[T]{
+		value:    t,
+		previous: currNodeAtIndex.previous,
+		next:     currNodeAtIndex,
+	}
+
+	currNodeAtIndex.previous.next = newNodeAtIndex
+	currNodeAtIndex.previous = newNodeAtIndex
+
+	// update the size
+	l.size += 1
+
+	return true
+}
+
+// DeleteIndex deletes value at the given index
+func (l *linkedList[T]) DeleteIndex(index int) (ok bool) {
+	// check if the index is valid
+	if index < 0 || index >= l.size {
+		return
+	}
+
+	// if index is 0, then call DeleteFirst
+	if index == 0 {
+		l.deleteFirst()
+		return true
+	}
+
+	// if index is the last index, then call DeleteLast
+	if index == l.size-1 {
+		l.deleteLast()
+		return true
+	}
+
+	// after the above conditions, we are sure that the index we are
+	// about to delete has both next and previous elements
+
+	currNodeAtIndex := l.get(index)
+
+	currNodeAtIndex.previous.next = currNodeAtIndex.next
+	currNodeAtIndex.next.previous = currNodeAtIndex.previous
+
+	// update the size
+	l.size -= 1
+
+	// dereference the node to help with garbage collection
+	currNodeAtIndex.next = nil
+	currNodeAtIndex.previous = nil
+	currNodeAtIndex = nil
+
+	return true
+}
+
 // Get returns the value of the element at the input index
 //
 // worst case O(n/2)
@@ -36,6 +110,17 @@ func (l *linkedList[T]) Get(index int) (t T, ok bool) {
 		return
 	}
 
+	// get the node at the input index
+	node := l.get(index)
+
+	return node.value, true
+}
+
+// get returns the node at the input index
+//
+// does not check for the validity of the index, should be checked at the caller
+// worst case O(n/2)
+func (l *linkedList[T]) get(index int) *node[T] {
 	distanceToLast := l.size - index
 	distanceToFirst := index
 
@@ -52,7 +137,7 @@ func (l *linkedList[T]) Get(index int) (t T, ok bool) {
 		}
 	}
 
-	return currNode.value, true
+	return currNode
 }
 
 // Size returns the current size of the linked list
@@ -62,6 +147,15 @@ func (l *linkedList[T]) Size() int {
 
 // Clear removes all elements from the linked list
 func (l *linkedList[T]) Clear() {
+	// Traverse the list and clear references to help garbage collection
+	current := l.first
+	for current != nil {
+		next := current.next
+		current.next = nil
+		current.previous = nil
+		current = next
+	}
+
 	l.first = nil
 	l.last = nil
 	l.size = 0
@@ -133,32 +227,61 @@ func (l *linkedList[T]) AddLast(t T) {
 }
 
 // DeleteFirst deletes first element of the linked list
-func (l *linkedList[T]) DeleteFirst() {
+func (l *linkedList[T]) DeleteFirst() (ok bool) {
 	// return if the linked list is empty
 	if l.first == nil {
 		return
 	}
 
+	// delete the first element
+	l.deleteFirst()
+
+	return true
+}
+
+// deleteFirst deletes first element of the linked list
+//
+// should not be called on an empy linked list
+func (l *linkedList[T]) deleteFirst() {
 	// clear the linked list if it has only one node
 	if l.first == l.last {
 		l.Clear()
 		return
 	}
 
-	// here we would have at least 2 nodes
+	// after the above conditions, we would have at least 2 nodes
+
+	// storing the reference to the element to be deleted
+	first := l.first
 
 	l.first = l.first.next
 	l.first.previous = nil
+
+	// clearing references to help garbage collection
+	first.next = nil
+	first.previous = nil
+	first = nil
+
 	l.size -= 1
 }
 
 // DeleteLast deletes last element of the linked list
-func (l *linkedList[T]) DeleteLast() {
+func (l *linkedList[T]) DeleteLast() (ok bool) {
 	// return if the linked list is empty
 	if l.last == nil {
 		return
 	}
 
+	// delete the last element
+	l.deleteLast()
+
+	return true
+}
+
+// deleteLast deletes last element of the linked list
+//
+// should not be called on an empty linked list
+func (l *linkedList[T]) deleteLast() {
 	// clear the linked list if it has only one node
 	if l.last == l.first {
 		l.Clear()
@@ -167,8 +290,17 @@ func (l *linkedList[T]) DeleteLast() {
 
 	// here we would have at least 2 nodes
 
+	// storing the reference to the element to be deleted
+	last := l.last
+
 	l.last = l.last.previous
 	l.last.next = nil
+
+	// clearing references to help garbage collection
+	last.next = nil
+	last.previous = nil
+	last = nil
+
 	l.size -= 1
 }
 
