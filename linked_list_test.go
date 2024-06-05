@@ -164,19 +164,26 @@ func TestLinkedList_Get(t *testing.T) {
 func TestLinkedList_InsertToIndex(t *testing.T) {
 	list := NewLinkedList[any]()
 
-	// nothing should happen for invalid input index
-	list.InsertToIndex("1", -1)
-	list.InsertToIndex("1", 1)
-	require.Equal(t, 0, list.Size())
-
 	const listSize = 1000
 	for i := 0; i < listSize; i++ {
 		list.Add(i)
 	}
 
-	size := list.Size()
-	indices := []int{0, listSize / 2, listSize - 1}
-	for _, index := range indices {
+	t.Run("InsertToInvalidIndex", func(t *testing.T) {
+		size := list.Size()
+
+		ok := list.InsertToIndex("hello", -1)
+		require.False(t, ok)
+
+		ok = list.InsertToIndex("hello", size)
+		require.False(t, ok)
+
+		require.Equal(t, size, list.Size())
+	})
+	t.Run("InsertToFirstIndex", func(t *testing.T) {
+		size := list.Size()
+		index := 0
+
 		oldIndexValue, ok := list.Get(index)
 		require.True(t, ok)
 
@@ -192,27 +199,70 @@ func TestLinkedList_InsertToIndex(t *testing.T) {
 		value, ok := list.Get(index + 1)
 		require.True(t, ok)
 		require.Equal(t, oldIndexValue, value)
-	}
+	})
+	t.Run("InsertToFirstIndex", func(t *testing.T) {
+		size := list.Size()
+		index := size / 2
+
+		oldIndexValue, ok := list.Get(index)
+		require.True(t, ok)
+
+		list.InsertToIndex("Hello", index)
+
+		size++
+		require.Equal(t, size, list.Size())
+
+		newIndexValue, ok := list.Get(index)
+		require.True(t, ok)
+		require.Equal(t, "Hello", newIndexValue)
+
+		value, ok := list.Get(index + 1)
+		require.True(t, ok)
+		require.Equal(t, oldIndexValue, value)
+	})
+	t.Run("InsertToFirstIndex", func(t *testing.T) {
+		size := list.Size()
+		index := size - 1
+
+		oldIndexValue, ok := list.Get(index)
+		require.True(t, ok)
+
+		list.InsertToIndex("Hello", index)
+
+		size++
+		require.Equal(t, size, list.Size())
+
+		newIndexValue, ok := list.Get(index)
+		require.True(t, ok)
+		require.Equal(t, "Hello", newIndexValue)
+
+		value, ok := list.Get(index + 1)
+		require.True(t, ok)
+		require.Equal(t, oldIndexValue, value)
+	})
 }
 
 // tests InsertToIndex method of the linked list
 func TestLinkedList_DeleteIndex(t *testing.T) {
 	list := NewLinkedList[any]()
 
-	ok := list.DeleteIndex(-1)
-	require.False(t, ok)
-	ok = list.DeleteIndex(1)
-	require.False(t, ok)
-	require.Equal(t, 0, list.Size())
-
 	const listSize = 1000
 	for i := 0; i < listSize; i++ {
 		list.Add(i)
 	}
 
-	size := list.Size()
-	indices := []int{0, listSize / 2, listSize - 1 - 3}
-	for _, index := range indices {
+	t.Run("DeleteInvalidIndex", func(t *testing.T) {
+		size := list.Size()
+
+		ok := list.DeleteIndex(-1)
+		require.False(t, ok)
+		ok = list.DeleteIndex(size)
+		require.False(t, ok)
+		require.Equal(t, size, list.Size())
+	})
+	t.Run("DeleteFirstIndex", func(t *testing.T) {
+		size := list.Size()
+		index := 0
 		newIndexValue, ok := list.Get(index + 1)
 		require.True(t, ok)
 
@@ -224,5 +274,35 @@ func TestLinkedList_DeleteIndex(t *testing.T) {
 		value, ok := list.Get(index)
 		require.True(t, ok)
 		require.Equal(t, newIndexValue, value)
-	}
+	})
+	t.Run("DeleteMiddleIndex", func(t *testing.T) {
+		size := list.Size()
+		index := size / 2
+		newIndexValue, ok := list.Get(index + 1)
+		require.True(t, ok)
+
+		list.DeleteIndex(index)
+
+		size--
+		require.Equal(t, size, list.Size())
+
+		value, ok := list.Get(index)
+		require.True(t, ok)
+		require.Equal(t, newIndexValue, value)
+	})
+	t.Run("DeleteLastIndex", func(t *testing.T) {
+		size := list.Size()
+		index := size - 1
+		newIndexValue, ok := list.Get(index - 1)
+		require.True(t, ok)
+
+		list.DeleteIndex(index)
+
+		size--
+		require.Equal(t, size, list.Size())
+
+		value, ok := list.Get(index - 1)
+		require.True(t, ok)
+		require.Equal(t, newIndexValue, value)
+	})
 }
