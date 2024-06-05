@@ -11,6 +11,7 @@ type LinkedList[T any] interface {
 	DeleteFirst()
 	DeleteLast()
 	Size() int
+	Get(index int) (T, bool)
 }
 
 // node represents a node in linked list
@@ -25,6 +26,33 @@ type linkedList[T any] struct {
 	first *node[T]
 	last  *node[T]
 	size  int
+}
+
+// Get returns the value of the element at the input index
+//
+// worst case O(n/2)
+func (l *linkedList[T]) Get(index int) (t T, ok bool) {
+	if index >= l.size || index < 0 {
+		return
+	}
+
+	distanceToLast := l.size - index
+	distanceToFirst := index
+
+	var currNode *node[T]
+	if distanceToFirst < distanceToLast {
+		currNode = l.first
+		for i := 0; i < distanceToFirst; i++ {
+			currNode = currNode.next
+		}
+	} else {
+		currNode = l.last
+		for i := 0; i < distanceToLast-1; i++ {
+			currNode = currNode.previous
+		}
+	}
+
+	return currNode.value, true
 }
 
 // Size returns the current size of the linked list
