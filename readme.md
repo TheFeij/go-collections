@@ -15,6 +15,7 @@ go get github.com/TheFeij/go-collections
 ## Subpackages
 
 - [Linked List](linkedlist/readme.md)
+- [Stack](stack/readme.md)
 
 ## Contributing
 
