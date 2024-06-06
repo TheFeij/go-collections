@@ -1,4 +1,4 @@
-package linked_list
+package linkedlist
 
 // doublyNode represents a node in a doubly linked list
 type doublyNode[T any] struct {

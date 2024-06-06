@@ -1,4 +1,4 @@
-package linked_list
+package linkedlist
 
 // LinkedList represents a linked list
 type LinkedList[T any] interface {
