@@ -70,6 +70,13 @@ func main() {
 A doubly linked list is a type of linked list in which each node contains
 a reference to both the next node and the previous node.
 
+#### Usage
+
+To get a doubly linked list use this function:
+```go
+func NewDoublyLinkedList[T any]() LinkedList[T]
+```
+
 #### Time Complexities of the Doubly Linked List Implementation
 
 | Method                                        | Time Complexity |
