@@ -9,6 +9,7 @@ type singlyNode[T any] struct {
 // singlyLinkedList is an implementation of the LinkedList interface
 type singlyLinkedList[T any] struct {
 	first *singlyNode[T]
+	last  *singlyNode[T]
 	size  int
 }
 
@@ -19,25 +20,23 @@ func (l *singlyLinkedList[T]) InsertToIndex(t T, index int) (ok bool) {
 		return
 	}
 
-	// if index is 0, then call AddFirst
 	if index == 0 {
 		l.AddFirst(t)
-		return true
+	} else {
+		nodeBeforeIndex := l.get(index - 1)
+
+		nodeAtIndex := nodeBeforeIndex.next
+
+		newNode := &singlyNode[T]{
+			value: t,
+			next:  nodeAtIndex,
+		}
+
+		nodeBeforeIndex.next = newNode
+
+		// update the size
+		l.size += 1
 	}
-
-	nodeBeforeIndex := l.get(index - 1)
-
-	nodeAtIndex := nodeBeforeIndex.next
-
-	newNode := &singlyNode[T]{
-		value: t,
-		next:  nodeAtIndex,
-	}
-
-	nodeBeforeIndex.next = newNode
-
-	// update the size
-	l.size += 1
 
 	return true
 }
@@ -64,6 +63,10 @@ func (l *singlyLinkedList[T]) DeleteIndex(index int) (ok bool) {
 
 	nodeBeforeIndex.next = nodeAtIndex.next
 
+	if nodeBeforeIndex.next == nil {
+		l.last = nodeBeforeIndex
+	}
+
 	// clear references to help garbage collection
 	nodeAtIndex.next = nil
 	nodeAtIndex = nil
@@ -82,7 +85,13 @@ func (l *singlyLinkedList[T]) Get(index int) (t T, ok bool) {
 		return
 	}
 
-	return l.get(index).value, true
+	if index == 0 {
+		return l.first.value, true
+	} else if index == l.size-1 {
+		return l.last.value, true
+	} else {
+		return l.get(index).value, true
+	}
 }
 
 // get returns the node at the input index
@@ -116,6 +125,7 @@ func (l *singlyLinkedList[T]) Clear() {
 	}
 
 	l.first = nil
+	l.last = nil
 	l.size = 0
 }
 
@@ -138,7 +148,7 @@ func (l *singlyLinkedList[T]) GetLast() (t T, ok bool) {
 		return
 	}
 
-	return l.get(l.size - 1).value, true
+	return l.last.value, true
 }
 
 // Add adds input value to the end of the linked list
@@ -151,6 +161,10 @@ func (l *singlyLinkedList[T]) AddFirst(t T) {
 	newNode := &singlyNode[T]{
 		value: t,
 		next:  l.first,
+	}
+
+	if l.size == 0 {
+		l.last = newNode
 	}
 
 	l.first = newNode
@@ -166,13 +180,11 @@ func (l *singlyLinkedList[T]) AddLast(t T) {
 
 	if l.size == 0 {
 		l.first = newNode
+	} else {
+		l.last.next = newNode
 	}
 
-	// get the curr last node
-	last := l.get(l.size - 1)
-
-	last.next = newNode
-
+	l.last = newNode
 	l.size += 1
 }
 
@@ -196,6 +208,7 @@ func (l *singlyLinkedList[T]) deleteFirst() {
 	// if the list has only one node
 	if l.size == 1 {
 		l.first = nil
+		l.last = nil
 		l.size = 0
 		return
 	}
@@ -234,6 +247,7 @@ func (l *singlyLinkedList[T]) deleteLast() {
 	// if the list has only one node
 	if l.size == 1 {
 		l.first = nil
+		l.last = nil
 		l.size = 0
 		return
 	}
@@ -245,6 +259,7 @@ func (l *singlyLinkedList[T]) deleteLast() {
 
 	// make the second last node the last node
 	secondLast.next = nil
+	l.last = secondLast
 
 	l.size -= 1
 }
@@ -253,6 +268,7 @@ func (l *singlyLinkedList[T]) deleteLast() {
 func NewSinglyLinkedList[T any]() LinkedList[T] {
 	return &singlyLinkedList[T]{
 		first: nil,
+		last:  nil,
 		size:  0,
 	}
 }
