@@ -1,16 +1,16 @@
 package linked_list
 
-// node represents a node in linked list
-type node[T any] struct {
+// doublyNode represents a node in a doubly linked list
+type doublyNode[T any] struct {
 	value    T
-	next     *node[T]
-	previous *node[T]
+	next     *doublyNode[T]
+	previous *doublyNode[T]
 }
 
 // doublyLinkedList is an implementation of the LinkedList interface
 type doublyLinkedList[T any] struct {
-	first *node[T]
-	last  *node[T]
+	first *doublyNode[T]
+	last  *doublyNode[T]
 	size  int
 }
 
@@ -33,7 +33,7 @@ func (l *doublyLinkedList[T]) InsertToIndex(t T, index int) (ok bool) {
 	// get the element at the input index
 	currNodeAtIndex := l.get(index)
 
-	newNodeAtIndex := &node[T]{
+	newNodeAtIndex := &doublyNode[T]{
 		value:    t,
 		previous: currNodeAtIndex.previous,
 		next:     currNodeAtIndex,
@@ -104,11 +104,11 @@ func (l *doublyLinkedList[T]) Get(index int) (t T, ok bool) {
 //
 // does not check for the validity of the index, should be checked at the caller
 // worst case O(n/2)
-func (l *doublyLinkedList[T]) get(index int) *node[T] {
+func (l *doublyLinkedList[T]) get(index int) *doublyNode[T] {
 	distanceToLast := l.size - index
 	distanceToFirst := index
 
-	var currNode *node[T]
+	var currNode *doublyNode[T]
 	if distanceToFirst < distanceToLast {
 		currNode = l.first
 		for i := 0; i < distanceToFirst; i++ {
@@ -174,7 +174,7 @@ func (l *doublyLinkedList[T]) Add(t T) {
 
 // AddFirst adds input value to the start of the linked list
 func (l *doublyLinkedList[T]) AddFirst(t T) {
-	newNode := &node[T]{
+	newNode := &doublyNode[T]{
 		value:    t,
 		next:     nil,
 		previous: nil,
@@ -193,7 +193,7 @@ func (l *doublyLinkedList[T]) AddFirst(t T) {
 
 // AddLast adds input value to the end of the linked list
 func (l *doublyLinkedList[T]) AddLast(t T) {
-	newNode := &node[T]{
+	newNode := &doublyNode[T]{
 		value:    t,
 		next:     nil,
 		previous: nil,
