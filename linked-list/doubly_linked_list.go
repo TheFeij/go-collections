@@ -288,7 +288,7 @@ func (l *doublyLinkedList[T]) deleteLast() {
 	l.size -= 1
 }
 
-// NewDoublyLinkedList returns a new linked list
+// NewDoublyLinkedList returns a new doubly linked list
 func NewDoublyLinkedList[T any]() LinkedList[T] {
 	return &doublyLinkedList[T]{
 		first: nil,
