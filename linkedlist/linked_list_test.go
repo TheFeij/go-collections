@@ -342,7 +342,7 @@ func TestLinkedList_InsertToIndex(t *testing.T) {
 				require.True(t, ok)
 				require.Equal(t, oldIndexValue, value)
 			})
-			t.Run("InsertToFirstIndex", func(t *testing.T) {
+			t.Run("InsertToMiddleIndex", func(t *testing.T) {
 				size := list.Size()
 				index := size / 2
 
@@ -362,7 +362,7 @@ func TestLinkedList_InsertToIndex(t *testing.T) {
 				require.True(t, ok)
 				require.Equal(t, oldIndexValue, value)
 			})
-			t.Run("InsertToFirstIndex", func(t *testing.T) {
+			t.Run("InsertToLastIndex", func(t *testing.T) {
 				size := list.Size()
 				index := size - 1
 
