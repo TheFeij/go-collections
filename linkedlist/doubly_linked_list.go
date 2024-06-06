@@ -94,10 +94,13 @@ func (l *doublyLinkedList[T]) Get(index int) (t T, ok bool) {
 		return
 	}
 
-	// get the node at the input index
-	node := l.get(index)
-
-	return node.value, true
+	if index == 0 {
+		return l.first.value, true
+	} else if index == l.size-1 {
+		return l.last.value, true
+	} else {
+		return l.get(index).value, true
+	}
 }
 
 // get returns the node at the input index
