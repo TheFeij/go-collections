@@ -7,15 +7,15 @@ type node[T any] struct {
 	previous *node[T]
 }
 
-// linkedList is the implementation of the LinkedList interface
-type linkedList[T any] struct {
+// doublyLinkedList is an implementation of the LinkedList interface
+type doublyLinkedList[T any] struct {
 	first *node[T]
 	last  *node[T]
 	size  int
 }
 
 // InsertToIndex inserts input value to the given index
-func (l *linkedList[T]) InsertToIndex(t T, index int) (ok bool) {
+func (l *doublyLinkedList[T]) InsertToIndex(t T, index int) (ok bool) {
 	// check if the index is valid
 	if index < 0 || index >= l.size {
 		return
@@ -49,7 +49,7 @@ func (l *linkedList[T]) InsertToIndex(t T, index int) (ok bool) {
 }
 
 // DeleteIndex deletes value at the given index
-func (l *linkedList[T]) DeleteIndex(index int) (ok bool) {
+func (l *doublyLinkedList[T]) DeleteIndex(index int) (ok bool) {
 	// check if the index is valid
 	if index < 0 || index >= l.size {
 		return
@@ -89,7 +89,7 @@ func (l *linkedList[T]) DeleteIndex(index int) (ok bool) {
 // Get returns the value of the element at the input index
 //
 // worst case O(n/2)
-func (l *linkedList[T]) Get(index int) (t T, ok bool) {
+func (l *doublyLinkedList[T]) Get(index int) (t T, ok bool) {
 	if index >= l.size || index < 0 {
 		return
 	}
@@ -104,7 +104,7 @@ func (l *linkedList[T]) Get(index int) (t T, ok bool) {
 //
 // does not check for the validity of the index, should be checked at the caller
 // worst case O(n/2)
-func (l *linkedList[T]) get(index int) *node[T] {
+func (l *doublyLinkedList[T]) get(index int) *node[T] {
 	distanceToLast := l.size - index
 	distanceToFirst := index
 
@@ -125,12 +125,12 @@ func (l *linkedList[T]) get(index int) *node[T] {
 }
 
 // Size returns the current size of the linked list
-func (l *linkedList[T]) Size() int {
+func (l *doublyLinkedList[T]) Size() int {
 	return l.size
 }
 
 // Clear removes all elements from the linked list
-func (l *linkedList[T]) Clear() {
+func (l *doublyLinkedList[T]) Clear() {
 	// Traverse the list and clear references to help garbage collection
 	current := l.first
 	for current != nil {
@@ -148,7 +148,7 @@ func (l *linkedList[T]) Clear() {
 // GetFirst returns the first element of the linked list
 //
 // ok = false means the linked list is empty and there is no first element
-func (l *linkedList[T]) GetFirst() (t T, ok bool) {
+func (l *doublyLinkedList[T]) GetFirst() (t T, ok bool) {
 	if l.first == nil {
 		return
 	}
@@ -159,7 +159,7 @@ func (l *linkedList[T]) GetFirst() (t T, ok bool) {
 // GetLast returns the last element of the linked list
 //
 // ok = false means the linked list is empty and there is no last element
-func (l *linkedList[T]) GetLast() (t T, ok bool) {
+func (l *doublyLinkedList[T]) GetLast() (t T, ok bool) {
 	if l.last == nil {
 		return
 	}
@@ -168,12 +168,12 @@ func (l *linkedList[T]) GetLast() (t T, ok bool) {
 }
 
 // Add adds input value to the end of the linked list
-func (l *linkedList[T]) Add(t T) {
+func (l *doublyLinkedList[T]) Add(t T) {
 	l.AddLast(t)
 }
 
 // AddFirst adds input value to the start of the linked list
-func (l *linkedList[T]) AddFirst(t T) {
+func (l *doublyLinkedList[T]) AddFirst(t T) {
 	newNode := &node[T]{
 		value:    t,
 		next:     nil,
@@ -192,7 +192,7 @@ func (l *linkedList[T]) AddFirst(t T) {
 }
 
 // AddLast adds input value to the end of the linked list
-func (l *linkedList[T]) AddLast(t T) {
+func (l *doublyLinkedList[T]) AddLast(t T) {
 	newNode := &node[T]{
 		value:    t,
 		next:     nil,
@@ -211,7 +211,7 @@ func (l *linkedList[T]) AddLast(t T) {
 }
 
 // DeleteFirst deletes first element of the linked list
-func (l *linkedList[T]) DeleteFirst() (ok bool) {
+func (l *doublyLinkedList[T]) DeleteFirst() (ok bool) {
 	// return if the linked list is empty
 	if l.first == nil {
 		return
@@ -226,7 +226,7 @@ func (l *linkedList[T]) DeleteFirst() (ok bool) {
 // deleteFirst deletes first element of the linked list
 //
 // should not be called on an empy linked list
-func (l *linkedList[T]) deleteFirst() {
+func (l *doublyLinkedList[T]) deleteFirst() {
 	// clear the linked list if it has only one node
 	if l.first == l.last {
 		l.Clear()
@@ -250,7 +250,7 @@ func (l *linkedList[T]) deleteFirst() {
 }
 
 // DeleteLast deletes last element of the linked list
-func (l *linkedList[T]) DeleteLast() (ok bool) {
+func (l *doublyLinkedList[T]) DeleteLast() (ok bool) {
 	// return if the linked list is empty
 	if l.last == nil {
 		return
@@ -265,7 +265,7 @@ func (l *linkedList[T]) DeleteLast() (ok bool) {
 // deleteLast deletes last element of the linked list
 //
 // should not be called on an empty linked list
-func (l *linkedList[T]) deleteLast() {
+func (l *doublyLinkedList[T]) deleteLast() {
 	// clear the linked list if it has only one node
 	if l.last == l.first {
 		l.Clear()
@@ -288,9 +288,9 @@ func (l *linkedList[T]) deleteLast() {
 	l.size -= 1
 }
 
-// NewLinkedList returns a new linked list
-func NewLinkedList[T any]() LinkedList[T] {
-	return &linkedList[T]{
+// NewDoublyLinkedList returns a new linked list
+func NewDoublyLinkedList[T any]() LinkedList[T] {
+	return &doublyLinkedList[T]{
 		first: nil,
 		last:  nil,
 		size:  0,

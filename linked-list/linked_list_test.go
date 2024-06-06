@@ -5,9 +5,9 @@ import (
 	"testing"
 )
 
-// tests NewLinkedList function
-func TestNewLinkedList(t *testing.T) {
-	list := NewLinkedList[any]()
+// tests NewDoublyLinkedList function
+func TestNewDoublyLinkedList(t *testing.T) {
+	list := NewDoublyLinkedList[any]()
 
 	require.Empty(t, list)
 	require.NotNil(t, list)
@@ -26,7 +26,7 @@ func TestNewLinkedList(t *testing.T) {
 
 // tests Add and AddLast methods (since Add uses AddLast internally)
 func TestLinkedList_Add_AddLast(t *testing.T) {
-	list := NewLinkedList[any]()
+	list := NewDoublyLinkedList[any]()
 
 	const listSize = 1000
 	for i := 0; i < listSize; i++ {
@@ -47,7 +47,7 @@ func TestLinkedList_Add_AddLast(t *testing.T) {
 
 // tests AddFirst method of the linked list
 func TestLinkedList_AddFirst(t *testing.T) {
-	list := NewLinkedList[any]()
+	list := NewDoublyLinkedList[any]()
 
 	const listSize = 1000
 	for i := 0; i < listSize; i++ {
@@ -68,7 +68,7 @@ func TestLinkedList_AddFirst(t *testing.T) {
 
 // tests Clear method of the linked list
 func TestLinkedList_Clear(t *testing.T) {
-	list := NewLinkedList[any]()
+	list := NewDoublyLinkedList[any]()
 
 	const listSize = 1000
 	for i := 0; i < listSize; i++ {
@@ -90,7 +90,7 @@ func TestLinkedList_Clear(t *testing.T) {
 
 // tests DeleteFirst method of the linked list
 func TestLinkedList_DeleteFirst(t *testing.T) {
-	list := NewLinkedList[any]()
+	list := NewDoublyLinkedList[any]()
 
 	list.DeleteFirst()
 
@@ -111,7 +111,7 @@ func TestLinkedList_DeleteFirst(t *testing.T) {
 
 // tests DeleteLast method of the linked list
 func TestLinkedList_DeleteLast(t *testing.T) {
-	list := NewLinkedList[any]()
+	list := NewDoublyLinkedList[any]()
 
 	list.DeleteLast()
 
@@ -132,7 +132,7 @@ func TestLinkedList_DeleteLast(t *testing.T) {
 
 // tests Get method of the linked list
 func TestLinkedList_Get(t *testing.T) {
-	list := NewLinkedList[any]()
+	list := NewDoublyLinkedList[any]()
 
 	const listSize = 1000
 	for i := 0; i < listSize; i++ {
@@ -162,7 +162,7 @@ func TestLinkedList_Get(t *testing.T) {
 
 // tests InsertToIndex method of the linked list
 func TestLinkedList_InsertToIndex(t *testing.T) {
-	list := NewLinkedList[any]()
+	list := NewDoublyLinkedList[any]()
 
 	const listSize = 1000
 	for i := 0; i < listSize; i++ {
@@ -244,7 +244,7 @@ func TestLinkedList_InsertToIndex(t *testing.T) {
 
 // tests InsertToIndex method of the linked list
 func TestLinkedList_DeleteIndex(t *testing.T) {
-	list := NewLinkedList[any]()
+	list := NewDoublyLinkedList[any]()
 
 	const listSize = 1000
 	for i := 0; i < listSize; i++ {
