@@ -116,9 +116,9 @@ func NewSinglyLinkedList[T any]() LinkedList[T]
 |-----------------------------------------------|-----------------|
 | `Add(T)`                                      | O(1)            |
 | `AddFirst(T)`                                 | O(1)            |
-| `AddLast(T)`                                  | O(n)            |
+| `AddLast(T)`                                  | O(1)            |
 | `GetFirst() (t T, ok bool)`                   | O(1)            |
-| `GetLast() (t T, ok bool)`                    | O(n)            |
+| `GetLast() (t T, ok bool)`                    | O(1)            |
 | `Clear()`                                     | O(n)            |
 | `DeleteFirst() (ok bool)`                     | O(1)            |
 | `DeleteLast() (ok bool)`                      | O(n)            |
