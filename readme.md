@@ -16,6 +16,7 @@ go get github.com/TheFeij/go-collections
 
 - [Linked List](linkedlist/readme.md)
 - [Stack](stack/readme.md)
+- [Queue](queue/readme.md)
 
 ## Contributing
 
