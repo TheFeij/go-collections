@@ -23,7 +23,7 @@ The `LinkedList` interface defines the following methods:
 
 ### Usage
 
-Here's an example of how to use the doubly linked list implementation:
+Here's an example of how to use an implementation of the LinkedList interface:
 
 ```go
 package main
