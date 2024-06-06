@@ -110,7 +110,7 @@ To get a singly linked list, use this function:
 func NewSinglyLinkedList[T any]() LinkedList[T]
 ```
 
-#### Time Complexities of the Doubly Linked List Implementation
+#### Time Complexities of the Singly Linked List Implementation
 
 | Method                                        | Time Complexity |
 |-----------------------------------------------|-----------------|
