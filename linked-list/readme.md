@@ -65,6 +65,9 @@ func main() {
 
 ## Implementations:
 
+- [Doubly Linked List](#doubly-linked-list)
+- [Singly Linked List](#singly-linked-list)
+
 ### Doubly Linked List
 
 A doubly linked list is a type of linked list in which each node contains
@@ -94,4 +97,33 @@ func NewDoublyLinkedList[T any]() LinkedList[T]
 | `InsertToIndex(t T, index int) (ok bool)`     | O(n/2)          |
 | `DeleteIndex(index int) (ok bool)`            | O(n/2)          |
 
+
+### Singly Linked List
+
+A singly linked list is a type of linked list in which each node contains
+a reference to the next node.
+
+#### Usage
+
+To get a singly linked list, use this function:
+```go
+func NewSinglyLinkedList[T any]() LinkedList[T]
+```
+
+#### Time Complexities of the Doubly Linked List Implementation
+
+| Method                                        | Time Complexity |
+|-----------------------------------------------|-----------------|
+| `Add(T)`                                      | O(1)            |
+| `AddFirst(T)`                                 | O(1)            |
+| `AddLast(T)`                                  | O(n)            |
+| `GetFirst() (t T, ok bool)`                   | O(1)            |
+| `GetLast() (t T, ok bool)`                    | O(n)            |
+| `Clear()`                                     | O(n)            |
+| `DeleteFirst() (ok bool)`                     | O(1)            |
+| `DeleteLast() (ok bool)`                      | O(n)            |
+| `Size() int`                                  | O(1)            |
+| `Get(index int) (t T, ok bool)`               | O(n)            |
+| `InsertToIndex(t T, index int) (ok bool)`     | O(n)            |
+| `DeleteIndex(index int) (ok bool)`            | O(n)            |
 
