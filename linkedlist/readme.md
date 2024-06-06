@@ -30,7 +30,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/TheFeij/go-collections/linked-list"
+	"github.com/TheFeij/go-collections/linkedlist"
 )
 
 func main() {
