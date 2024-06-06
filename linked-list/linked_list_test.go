@@ -1,4 +1,4 @@
-package collections
+package linked_list
 
 import (
 	"github.com/stretchr/testify/require"
